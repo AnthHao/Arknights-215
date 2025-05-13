@@ -1,84 +1,92 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>215 Calculator</title>
+  <meta charset="UTF-8" />
+  <title>伤害计算器</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; }
-    label, select, input, button { display: block; margin: 0.5rem 0; }
-    #results p { margin: 0.25rem 0; }
-    .result-label { font-weight: bold; }
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    label, select, input { display: block; margin: 10px 0; }
+    .result { margin-top: 20px; }
+    .result p { margin: 5px 0; }
+    button { padding: 8px 16px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <h1>215 Calculator</h1>
-  <label for="characterSelect">选择角色：</label>
-  <select id="characterSelect">
+  <h1>伤害计算器</h1>
+  <label for="character">选择角色：</label>
+  <select id="character">
     <option value="1">聆音1</option>
     <option value="2">龙舌兰2</option>
   </select>
 
-  <label for="defenseInput">敌方防御力：</label>
-  <input type="number" id="defenseInput" value="0" min="0" step="1">
+  <label for="defense">敌方防御力：</label>
+  <input type="number" id="defense" value="0" min="0" />
 
   <button id="calcBtn">计算</button>
 
-  <div id="results"></div>
+  <div class="result" id="result">
+    <!-- 结果显示区域 -->
+  </div>
 
   <script>
-    // 角色属性
-    const atk1 = 790 * 1.13;
-    const multiplier1 = 1.5;
-    const atk2 = 306 * 3 * 2.3;
-    const attackInterval = 1.2;
-    const duration = 30;
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('calcBtn');
+      btn.addEventListener('click', calculateDamage);
+    });
 
-    function simulateChar1(defense) {
-      let totalPhysical = 0;
+    function calculateDamage() {
+      const charId = document.getElementById('character').value;
+      const defInput = document.getElementById('defense').value;
+      const def = parseFloat(defInput) >= 0 ? parseFloat(defInput) : 0;
+
+      const interval = 1.2;
+      const duration = 30;
+      const attackCount = Math.floor(duration / interval);
+
+      let totalPhys = 0;
       let totalTrue = 0;
-      let cumNerve = 0;
-      let cooldownEnd = -Infinity;
-      const effAtk1 = atk1 * multiplier1;
-      for (let t = 0; t < duration; t += attackInterval) {
-        const hitDamage = Math.max(effAtk1 - defense, 0.05 * effAtk1);
-        const physical = hitDamage * 2;
-        totalPhysical += physical;
 
-        if (t >= cooldownEnd) {
-          cumNerve += 0.1 * physical;
-          if (cumNerve >= 1000) {
-            totalTrue += 6000;
-            cumNerve = 0;
-            cooldownEnd = t + 10;
+      if (charId === '1') {
+        // 聆音1 参数
+        const atk = 790 * 1.13;
+        const mult = 1.5;
+        const effAtk = atk * mult * 2; // 二连击总倍率
+        let cumNerve = 0;
+        let nextNerveTime = 0;
+
+        for (let i = 0; i < attackCount; i++) {
+          const t = i * interval;
+          const phy = Math.max(effAtk - def, 0.05 * effAtk);
+          totalPhys += phy;
+
+          if (t >= nextNerveTime) {
+            cumNerve += 0.1 * phy;
+            if (cumNerve >= 1000) {
+              totalTrue += 6000;
+              cumNerve = 0;
+              nextNerveTime = t + 10;
+            }
           }
         }
+      } else {
+        // 龙舌兰2 参数
+        const atk2 = 306 * 3 * 2.3;
+        for (let i = 0; i < attackCount; i++) {
+          const phy = Math.max(atk2 - def, 0.05 * atk2);
+          totalPhys += phy;
+        }
       }
-      return {
-        total: totalPhysical + totalTrue,
-        dps: (totalPhysical + totalTrue) / duration,
-        physical: totalPhysical,
-        trueDamage: totalTrue
-      };
+
+      const total = totalPhys + totalTrue;
+      const dps = total / duration;
+
+      document.getElementById('result').innerHTML = `
+        <p><strong>总伤害：</strong> ${total.toFixed(1)}</p>
+        <p><strong>DPS：</strong> ${dps.toFixed(2)}</p>
+        <p><strong>物理伤害：</strong> ${totalPhys.toFixed(1)}</p>
+        <p><strong>真伤害：</strong> ${totalTrue.toFixed(1)}</p>
+      `;
     }
-
-    function simulateChar2(defense) {
-      const hits = Math.floor(duration / attackInterval);
-      const hitDamage = Math.max(atk2 - defense, 0.05 * atk2);
-      const totalPhysical = hitDamage * hits;
-      return {
-        total: totalPhysical,
-        dps: totalPhysical / duration,
-        physical: totalPhysical,
-        trueDamage: 0
-      };
-    }
-
-    document.getElementById('calcBtn').addEventListener('click', () => {
-      const def = parseFloat(document.getElementById('defenseInput').value) || 0;
-      const charId = document.getElementById('characterSelect').value;
-      const result = charId === '1' ? simulateChar1(def) : simulateChar2(def);
-
-      const container = document.getElementById('results');
-      container.innerHTML = `
-        <p><span class="result
+  </script>
+</body>
+</html>

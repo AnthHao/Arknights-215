@@ -29,15 +29,14 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const btn = document.getElementById('calcBtn');
-      btn.addEventListener('click', calculateDamage);
-    });
+    const characterEl = document.getElementById('character');
+    const defenseEl = document.getElementById('defense');
+    const resultEl    = document.getElementById('result');
 
-    function calculateDamage() {
-      const charId = document.getElementById('character').value;
-      const defInput = document.getElementById('defense').value;
-      const def = parseFloat(defInput) >= 0 ? parseFloat(defInput) : 0;
+    // 计算并更新显示
+    function update() {
+      const charId = characterEl.value;
+      const def = parseFloat(defenseEl.value) || 0;
 
       const interval = 1.2;
       const duration = 30;
@@ -50,7 +49,7 @@
         // 聆音1 参数
         const atk = 790 * 1.13;
         const mult = 1.5;
-        const effAtk = atk * mult * 2; // 二连击总倍率
+        const effAtk = atk * mult * 2; // 二连击两次之和
         let cumNerve = 0;
         let nextNerveTime = 0;
 
@@ -58,7 +57,6 @@
           const t = i * interval;
           const phy = Math.max(effAtk - def, 0.05 * effAtk);
           totalPhys += phy;
-
           if (t >= nextNerveTime) {
             cumNerve += 0.1 * phy;
             if (cumNerve >= 1000) {
@@ -80,13 +78,21 @@
       const total = totalPhys + totalTrue;
       const dps = total / duration;
 
-      document.getElementById('result').innerHTML = `
+      // 更新结果
+      resultEl.innerHTML = `
         <p><strong>总伤害：</strong> ${total.toFixed(1)}</p>
         <p><strong>DPS：</strong> ${dps.toFixed(2)}</p>
         <p><strong>物理伤害：</strong> ${totalPhys.toFixed(1)}</p>
         <p><strong>真伤害：</strong> ${totalTrue.toFixed(1)}</p>
       `;
     }
+
+    // 监听输入和选择变化，实时更新
+    characterEl.addEventListener('change', update);
+    defenseEl.addEventListener('input', update);
+
+    // 初次渲染
+    update();
   </script>
 </body>
 </html>

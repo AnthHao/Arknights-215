@@ -49,11 +49,11 @@
         const atkCount = 2;
         let cumNerve = 0;
         let nextNerveTime = 0;
+        const phy = Math.max(effAtk - def, 0.05 * effAtk) * atkCount;
 
         for (let i = 0; i < attackCount; i++) {
           const t = i * interval;
           // 本次物理伤害
-          const phy = Math.max(effAtk - def, 0.05 * effAtk) * atkCount;
           totalPhys += phy;
 
           // 神经损伤
@@ -69,8 +69,8 @@
       } else {
         // 龙舌兰2 参数
         const atk2 = 306 * 3 * 2.3;
+        const phy = Math.max(atk2 - def, 0.05 * atk2);
         for (let i = 0; i < attackCount; i++) {
-          const phy = Math.max(atk2 - def, 0.05 * atk2);
           totalPhys += phy;
         }
       }

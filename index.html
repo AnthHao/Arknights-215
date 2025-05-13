@@ -45,14 +45,15 @@
         // 聆音1 参数
         const atk = 790 * 1.13;
         const mult = 1.5;
-        const effAtk = atk * mult * 2; // 每次二连击总倍率
+        const effAtk = atk * mult; // 每次二连击总倍率
+        const atkCount = 2;
         let cumNerve = 0;
         let nextNerveTime = 0;
 
         for (let i = 0; i < attackCount; i++) {
           const t = i * interval;
           // 本次物理伤害
-          const phy = Math.max(effAtk - def, 0.05 * effAtk);
+          const phy = Math.max(effAtk - def, 0.05 * effAtk) * atkCount;
           totalPhys += phy;
 
           // 神经损伤

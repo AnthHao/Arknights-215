@@ -40,7 +40,6 @@
 
       let totalPhys = 0;
       let totalTrue = 0;
-      let phy;
 
       if (charId === '1') {
         // 聆音1 参数
@@ -50,6 +49,7 @@
         const atkCount = 2;
         let cumNerve = 0;
         let nextNerveTime = 0;
+        let phy;
 
         for (let i = 0; i < attackCount; i++) {
           const t = i * interval;
@@ -69,8 +69,9 @@
         }
       } else {
         // 龙舌兰2 参数
+        let phy;
         const atk2 = 306 * 3 * 2.3;
-        const phy = Math.max(atk2 - def, 0.05 * atk2);
+        phy = Math.max(atk2 - def, 0.05 * atk2);
         for (let i = 0; i < attackCount; i++) {
           totalPhys += phy;
         }

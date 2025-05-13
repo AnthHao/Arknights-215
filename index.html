@@ -54,8 +54,9 @@
         for (let i = 0; i < attackCount; i++) {
           const t = i * interval;
           // 本次物理伤害
-          dph = Math.max(effAtk - def, 0.05 * effAtk) * atkCount;
-          totalPhys += dph;
+          dph = Math.max(effAtk - def, 0.05 * effAtk);
+          phy = dph * atkCount;
+          totalPhys += phy;
 
           // 神经损伤
           if (t >= nextNerveTime) {

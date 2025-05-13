@@ -12,89 +12,17 @@
 </head>
 <body>
   <h1>215 Calculator</h1>
+
   <label for="character">选择角色：</label>
   <select id="character">
-    <option value="1">聆音1</option>
-    <option value="2">龙舌兰2</option>
+    <!-- 动态填充 -->
   </select>
 
   <label for="defense">敌方防御力：</label>
   <input type="number" id="defense" value="0" min="0" />
 
-  <div class="result" id="result">
-    <!-- 结果显示区域 -->
-  </div>
+  <div class="result" id="result"></div>
 
-  <script>
-    const characterEl = document.getElementById('character');
-    const defenseEl   = document.getElementById('defense');
-    const resultEl    = document.getElementById('result');
-
-    function updateResult() {
-      const charId = characterEl.value;
-      const def = parseFloat(defenseEl.value) || 0;
-
-      const interval = 1.2;
-      const duration = 30;
-      const attackCount = Math.floor(duration / interval);
-
-      let totalPhys = 0;
-      let totalTrue = 0;
-      let dph = 0;
-
-      if (charId === '1') {
-        // 聆音1 参数
-        const atk = 790 * 1.13;
-        const mult = 1.5;
-        const effAtk = atk * mult; // 每次二连击总倍率
-        const atkCount = 2;
-        let cumNerve = 0;
-        let nextNerveTime = 0;
-
-        for (let i = 0; i < attackCount; i++) {
-          const t = i * interval;
-          // 本次物理伤害
-          dph = Math.max(effAtk - def, 0.05 * effAtk);
-          phy = dph * atkCount;
-          totalPhys += phy;
-
-          // 神经损伤
-          if (t >= nextNerveTime) {
-            cumNerve += 0.1 * dph;
-            if (cumNerve >= 1000) {
-              totalTrue += 6000;
-              cumNerve = 0;
-              nextNerveTime = t + 10;
-            }
-          }
-        }
-      } else {
-        // 龙舌兰2 参数
-        const atk2 = 306 * 3 * 2.3;
-        dph = Math.max(atk2 - def, 0.05 * atk2);
-        for (let i = 0; i < attackCount; i++) {
-          totalPhys += dph;
-        }
-      }
-
-      const total = totalPhys + totalTrue;
-      const dps = total / duration;
-
-      resultEl.innerHTML = `
-        <p><strong>总伤害：</strong> ${total.toFixed(1)}</p>
-        <p><strong>物理伤害：</strong> ${totalPhys.toFixed(1)}</p>
-        <p><strong>元素伤害：</strong> ${totalTrue.toFixed(1)}</p>        
-        <p><strong>DPS：</strong> ${dps.toFixed(2)}</p>
-        <p><strong>DPH：</strong> ${dph.toFixed(2)}</p>
-      `;
-    }
-
-    // 当角色选择或防御值变化时实时更新
-    characterEl.addEventListener('change', updateResult);
-    defenseEl.addEventListener('input', updateResult);
-
-    // 初始化一次
-    updateResult();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

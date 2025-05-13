@@ -30,11 +30,10 @@
 
   <script>
     const characterEl = document.getElementById('character');
-    const defenseEl = document.getElementById('defense');
+    const defenseEl   = document.getElementById('defense');
     const resultEl    = document.getElementById('result');
 
-    // 计算并更新显示
-    function update() {
+    function updateResult() {
       const charId = characterEl.value;
       const def = parseFloat(defenseEl.value) || 0;
 
@@ -49,14 +48,17 @@
         // 聆音1 参数
         const atk = 790 * 1.13;
         const mult = 1.5;
-        const effAtk = atk * mult * 2; // 二连击两次之和
+        const effAtk = atk * mult * 2; // 每次二连击总倍率
         let cumNerve = 0;
         let nextNerveTime = 0;
 
         for (let i = 0; i < attackCount; i++) {
           const t = i * interval;
+          // 本次物理伤害
           const phy = Math.max(effAtk - def, 0.05 * effAtk);
           totalPhys += phy;
+
+          // 神经损伤
           if (t >= nextNerveTime) {
             cumNerve += 0.1 * phy;
             if (cumNerve >= 1000) {
@@ -78,7 +80,6 @@
       const total = totalPhys + totalTrue;
       const dps = total / duration;
 
-      // 更新结果
       resultEl.innerHTML = `
         <p><strong>总伤害：</strong> ${total.toFixed(1)}</p>
         <p><strong>DPS：</strong> ${dps.toFixed(2)}</p>
@@ -87,12 +88,12 @@
       `;
     }
 
-    // 监听输入和选择变化，实时更新
-    characterEl.addEventListener('change', update);
-    defenseEl.addEventListener('input', update);
+    // 当角色选择或防御值变化时实时更新
+    characterEl.addEventListener('change', updateResult);
+    defenseEl.addEventListener('input', updateResult);
 
-    // 初次渲染
-    update();
+    // 初始化一次
+    updateResult();
   </script>
 </body>
 </html>

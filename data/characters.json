@@ -1,0 +1,23 @@
+[
+  {
+    "id": "lingyin1",
+    "label": "聆音1",
+    "type": "nervous",
+    "baseAtk": 790,
+    "atkMultiplier": 1.13,
+    "comboMultiplier": 1.5,
+    "comboCount": 2,
+    "nerveRate": 0.1,
+    "nerveThreshold": 1000,
+    "trueDamageValue": 6000,
+    "nerveCooldown": 10
+  },
+  {
+    "id": "longshelan2",
+    "label": "龙舌兰2",
+    "type": "simple",
+    "baseAtk": 306,
+    "atkMultipliers": [3, 2.3],
+    "comboCount": 1
+  }
+]

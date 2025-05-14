@@ -28,7 +28,7 @@ function populateCharacterSelect() {
     .join('');
 }
 
-// 3. 更新按钮显示与重置 Boss 模式
+// 监听角色变化：显示/隐藏勾选框，重置状态，并计算结果
 characterEl.addEventListener('change', () => {
   const char = characters.find(c => c.id === characterEl.value);
   if (char && char.type === 'nervous') {
@@ -40,13 +40,13 @@ characterEl.addEventListener('change', () => {
   updateResult();
 });
 
-// 4. 切换 Boss 模式
+// 监听勾选框变化：切换 Boss 模式
 bossCheckbox.addEventListener('change', () => {
   isBossMode = bossCheckbox.checked;
   updateResult();
 });
 
-// 5. 计算并显示结果
+// 防御值变化时也要更新结果
 defenseEl.addEventListener('input', updateResult);
 
 // 计算并更新结果

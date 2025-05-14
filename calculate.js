@@ -82,7 +82,7 @@ function updateResult() {
 
     for (let i = 0; i < attackCount; i++) {
       const t = i * interval;
-      const dph = Math.max(atkTotal - def, 0.05 * atkTotal);
+      dph = Math.max(atkTotal - def, 0.05 * atkTotal);
       damagePerAttack = dph * char.comboCount;
       totalPhys += damagePerAttack;
 

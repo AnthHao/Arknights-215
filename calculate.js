@@ -37,7 +37,7 @@ function updateResult() {
   const { duration, interval, comboCount, baseAtk, plusBuff, mulBuff } = char;
   const attackCount = Math.floor(duration / interval);
 
-  // 计算加算 Buff 总和：1 + ∑plusBuff
+  // 计算 Buff
   const plusBuffTotal = char.plusBuff.reduce((sum, b) => sum + b, 1);
   const mulBuffTotal = char.mulBuff.reduce((prod, m) => prod * m, 1);
   const buffTotal = plusBuffTotal * mulBuffTotal;
@@ -68,7 +68,7 @@ function updateResult() {
     }
 
   } else if (char.type === 'simple') {
-    dph = Math.max(atkTotal - def, 0.05 * atkTotal) * comboCount;
+    dph = Math.max(atkTotal - def, 0.05 * atkTotal);
     totalPhys = dph * comboCount * attackCount;
   }
 

@@ -37,13 +37,12 @@ function updateResult() {
   const { duration, interval, comboCount, baseAtk, plusBuff, mulBuff } = char;
   const attackCount = Math.floor(duration / interval);
 
-  // 计算所有 Buff
-  const plusBuffTotal = plusBuff.reduce((s, b) => s + b, 1);
-  const mulBuffTotal  = mulBuff.reduce((p, m) => p * (1 + m), 1);
-  const buffTotal     = plusBuffTotal * mulBuffTotal;
+  // 计算加算 Buff 总和：1 + ∑plusBuff
+  const plusBuffTotal = char.plusBuff.reduce((sum, b) => sum + b, 1);
+  const mulBuffTotal = char.mulBuff.reduce((prod, m) => prod * m, 1);
+  const buffTotal = plusBuffTotal * mulBuffTotal;
+  const atkTotal = char.baseAtk * buffTotal;
 
-  // 带 Buff 的实际攻击力
-  const atkTotal = baseAtk * buffTotal;
 
   let totalPhys = 0;
   let totalTrue = 0;

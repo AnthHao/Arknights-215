@@ -15,7 +15,7 @@ Promise.all([
   characters = chars;
   elementData  = element;
   populateCharacterSelect();
-  updateResult();
+  characterEl.dispatchEvent(new Event('change'));
 }).catch(err => {
   console.error('加载失败：', err);
   resultEl.innerHTML = '<p>数据加载失败，请检查控制台。</p>';

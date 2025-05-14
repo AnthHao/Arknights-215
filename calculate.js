@@ -1,21 +1,25 @@
 const characterEl = document.getElementById('character');
 const defenseEl   = document.getElementById('defense');
+const bossBtn     = document.getElementById('bossBtn');
 const resultEl    = document.getElementById('result');
 
 let characters = [];
+let nerveData  = {};
+let isBossMode = false;
 
 // 加载角色数据
-fetch('data/characters.json')
-  .then(res => res.json())
-  .then(data => {
-    characters = data;
-    populateCharacterSelect();
-    updateResult();
-  })
-  .catch(err => {
-    console.error('加载角色数据失败：', err);
-    resultEl.innerHTML = '<p>角色数据加载失败，请检查控制台。</p>';
-  });
+Promise.all([
+  fetch('data/characters.json').then(r => r.json()),
+  fetch('data/element.json').then(r => r.json())
+]).then(([chars, element]) => {
+  characters = chars;
+  elementData  = element;
+  populateCharacterSelect();
+  updateResult();
+}).catch(err => {
+  console.error('加载失败：', err);
+  resultEl.innerHTML = '<p>数据加载失败，请检查控制台。</p>';
+});
 
 // 填充下拉菜单
 function populateCharacterSelect() {
@@ -23,6 +27,29 @@ function populateCharacterSelect() {
     .map(ch => `<option value="${ch.id}">${ch.label}</option>`)
     .join('');
 }
+
+// 3. 更新按钮显示与重置 Boss 模式
+characterEl.addEventListener('change', () => {
+  const char = characters.find(c => c.id === characterEl.value);
+  if (char.type === 'nervous') {
+    bossBtn.style.display = 'inline-block';
+  } else {
+    bossBtn.style.display = 'none';
+    isBossMode = false;
+    bossBtn.textContent = 'Boss模式';
+  }
+  updateResult();
+});
+
+// 4. 切换 Boss 模式
+bossBtn.addEventListener('click', () => {
+  isBossMode = !isBossMode;
+  bossBtn.textContent = isBossMode ? '退出Boss' : 'Boss模式';
+  updateResult();
+});
+
+// 5. 计算并显示结果
+defenseEl.addEventListener('input', updateResult);
 
 // 计算并更新结果
 function updateResult() {
@@ -44,26 +71,27 @@ function updateResult() {
   const atkTotal = char.baseAtk * buffTotal;
 
   let totalPhys = 0;
-  let totalTrue = 0;
+  let totalElement = 0;
   let dph = 0;
 
   if (char.type === 'nervous') {
-    let cumNerve      = 0;
-    let nextNerveTime = 0;
+    const threshold = isBossMode
+      ? elementData.bossThreshold
+      : elementData.normalThreshold;
+    let cumNerve = 0, nextNerveTime = 0;
 
     for (let i = 0; i < attackCount; i++) {
       const t = i * interval;
-      dph = Math.max(atkTotal - def, 0.05 * atkTotal);
-      damagePerAtk =  dph * comboCount;
-      totalPhys += damagePerAtk;
+      const dph = Math.max(atkTotal - def, 0.05 * atkTotal);
+      damagePerAttack = dph * char.comboCount;
+      totalPhys += damagePerAttack;
 
-      // 神经损伤逻辑
       if (t >= nextNerveTime) {
-        cumNerve += char.nerveRate * damagePerAtk;
-        if (cumNerve >= char.nerveThreshold) {
-          totalTrue += char.trueDamageValue;
+        cumNerve += nerveData.nerveRate * dphSingle;
+        if (cumNerve >= threshold) {
+          totalTrue += nerveData.trueDamageValue;
           cumNerve = 0;
-          nextNerveTime = t + char.nerveCooldown;
+          nextNerveTime = t + nerveData.nerveCooldown;
         }
       }
     }

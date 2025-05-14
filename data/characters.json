@@ -9,10 +9,7 @@
     "comboCount": 2,
     "duration": 30,
     "interval": 1.2,
-    "nerveRate": 0.1,
-    "nerveThreshold": 1000,
-    "trueDamageValue": 6000,
-    "nerveCooldown": 10
+    "nerveRate": 0.1
   },
   {
     "id": "longshelan2",

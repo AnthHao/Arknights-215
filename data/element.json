@@ -1,0 +1,10 @@
+{
+    "normalThreshold": 1000,
+    "bossThreshold": 2000,
+    "nerveDamageValue": 6000,
+    "nerveCooldown": 10,
+    "darkDamageValue": 12000,
+    "darkCooldown": 15,
+    "fireDamageValue": 7000,
+    "fireCooldown": 10
+}  

@@ -5,21 +5,23 @@
   <title>215 Calculator</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
-    label, select, input { display: block; margin: 10px 0; }
+    label, select, input, button { display: block; margin: 10px 0; }
     .result { margin-top: 20px; }
     .result p { margin: 5px 0; }
+    #bossBtn { display: none; }
   </style>
 </head>
 <body>
   <h1>215 Calculator</h1>
 
   <label for="character">选择角色：</label>
-  <select id="character">
-    <!-- 动态填充 -->
-  </select>
+  <select id="character"></select>
 
   <label for="defense">敌方防御力：</label>
   <input type="number" id="defense" value="0" min="0" />
+
+  <!-- 只有 Nervous 类型出现 -->
+  <button id="bossBtn">Boss模式</button>
 
   <div class="result" id="result"></div>
 

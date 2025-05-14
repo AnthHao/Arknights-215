@@ -4,9 +4,11 @@
     "label": "聆音1",
     "type": "nervous",
     "baseAtk": 790,
-    "atkMultiplier": 1.13,
-    "comboMultiplier": 1.5,
+    "plusBuff": [0.13],
+    "mulBuff": [1.5],
     "comboCount": 2,
+    "duration": 30,
+    "interval": 1.2,
     "nerveRate": 0.1,
     "nerveThreshold": 1000,
     "trueDamageValue": 6000,
@@ -17,7 +19,10 @@
     "label": "龙舌兰2",
     "type": "simple",
     "baseAtk": 306,
-    "atkMultipliers": [3, 2.3],
-    "comboCount": 1
+    "plusBuff": [2.0],
+    "mulBuff": [2.3],
+    "comboCount": 1,
+    "duration": 30,
+    "interval": 1.2
   }
 ]

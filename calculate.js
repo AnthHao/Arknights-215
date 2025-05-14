@@ -62,7 +62,7 @@ function updateResult() {
 
   // 从 JSON 中读取
   const { duration, interval, comboCount, baseAtk, plusBuff, mulBuff } = char;
-  const attackCount = Math.floor(duration / interval);
+  const attackCount = Math.round(duration / interval);
 
   // 计算 Buff
   const plusBuffTotal = plusBuff.reduce((sum, b) => sum + b, 1);

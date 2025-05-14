@@ -54,11 +54,12 @@ function updateResult() {
     for (let i = 0; i < attackCount; i++) {
       const t = i * interval;
       dph = Math.max(atkTotal - def, 0.05 * atkTotal);
-      totalPhys += dph * comboCount;
+      damagePerAtk =  dph * comboCount;
+      totalPhys += damagePerAtk;
 
       // 神经损伤逻辑
       if (t >= nextNerveTime) {
-        cumNerve += char.nerveRate * dph;
+        cumNerve += char.nerveRate * damagePerAtk;
         if (cumNerve >= char.nerveThreshold) {
           totalTrue += char.trueDamageValue;
           cumNerve = 0;

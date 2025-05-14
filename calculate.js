@@ -80,7 +80,7 @@ function updateResult() {
     <p><strong>物理伤害：</strong> ${totalPhys.toFixed(1)}</p>
     <p><strong>元素伤害：</strong> ${totalTrue.toFixed(1)}</p>
     <p><strong>DPS：</strong> ${dps.toFixed(2)}</p>
-    <p><strong>DPH：</strong> ${lastDPH.toFixed(2)}</p>
+    <p><strong>DPH：</strong> ${dph.toFixed(2)}</p>
   `;
 }
 

@@ -87,9 +87,9 @@ function updateResult() {
       totalPhys += damagePerAttack;
 
       if (t >= nextNerveTime) {
-        cumNerve += nerveData.nerveRate * dphSingle;
+        cumNerve += nerveData.nerveRate * damagePerAttack;
         if (cumNerve >= threshold) {
-          totalTrue += nerveData.trueDamageValue;
+          totalElement += nerveData.trueDamageValue;
           cumNerve = 0;
           nextNerveTime = t + nerveData.nerveCooldown;
         }
@@ -101,13 +101,13 @@ function updateResult() {
     totalPhys = dph * comboCount * attackCount;
   }
 
-  const total = totalPhys + totalTrue;
+  const total = totalPhys + totalElement;
   const dps   = total / duration;
 
   resultEl.innerHTML = `
     <p><strong>总伤害：</strong> ${total.toFixed(1)}</p>
     <p><strong>物理伤害：</strong> ${totalPhys.toFixed(1)}</p>
-    <p><strong>元素伤害：</strong> ${totalTrue.toFixed(1)}</p>
+    <p><strong>元素伤害：</strong> ${totalElement.toFixed(1)}</p>
     <p><strong>DPS：</strong> ${dps.toFixed(2)}</p>
     <p><strong>DPH：</strong> ${dph.toFixed(2)}</p>
   `;

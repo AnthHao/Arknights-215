@@ -43,10 +43,9 @@ function updateResult() {
   const buffTotal = plusBuffTotal * mulBuffTotal;
   const atkTotal = char.baseAtk * buffTotal;
 
-
   let totalPhys = 0;
   let totalTrue = 0;
-  let lastDPH   = 0;
+  let dph = 0;
 
   if (char.type === 'nervous') {
     let cumNerve      = 0;
@@ -54,13 +53,12 @@ function updateResult() {
 
     for (let i = 0; i < attackCount; i++) {
       const t = i * interval;
-      const dphSingle = Math.max(atkTotal - def, 0.05 * atkTotal) * comboCount;
-      totalPhys += dphSingle;
-      lastDPH = dphSingle;
+      dph = Math.max(atkTotal - def, 0.05 * atkTotal);
+      totalPhys += dph * comboCount;
 
       // 神经损伤逻辑
       if (t >= nextNerveTime) {
-        cumNerve += char.nerveRate * dphSingle;
+        cumNerve += char.nerveRate * dph;
         if (cumNerve >= char.nerveThreshold) {
           totalTrue += char.trueDamageValue;
           cumNerve = 0;
@@ -70,9 +68,8 @@ function updateResult() {
     }
 
   } else if (char.type === 'simple') {
-    const dphSingle = Math.max(atkTotal - def, 0.05 * atkTotal) * comboCount;
-    lastDPH = dphSingle;
-    totalPhys = dphSingle * attackCount;
+    dph = Math.max(atkTotal - def, 0.05 * atkTotal) * comboCount;
+    totalPhys = dph * comboCount * attackCount;
   }
 
   const total = totalPhys + totalTrue;

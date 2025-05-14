@@ -31,20 +31,18 @@ function populateCharacterSelect() {
 // 3. 更新按钮显示与重置 Boss 模式
 characterEl.addEventListener('change', () => {
   const char = characters.find(c => c.id === characterEl.value);
-  if (char.type === 'nervous') {
-    bossBtn.style.display = 'inline-block';
+  if (char && char.type === 'nervous') {
+    bossContainer.style.display = 'block';
   } else {
-    bossBtn.style.display = 'none';
-    isBossMode = false;
-    bossBtn.textContent = 'Boss模式';
+    bossContainer.style.display = 'none';
+    bossCheckbox.checked = false;
   }
   updateResult();
 });
 
 // 4. 切换 Boss 模式
-bossBtn.addEventListener('click', () => {
-  isBossMode = !isBossMode;
-  bossBtn.textContent = isBossMode ? '退出Boss' : 'Boss模式';
+bossCheckbox.addEventListener('change', () => {
+  isBossMode = bossCheckbox.checked;
   updateResult();
 });
 

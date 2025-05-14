@@ -65,10 +65,10 @@ function updateResult() {
   const attackCount = Math.floor(duration / interval);
 
   // 计算 Buff
-  const plusBuffTotal = char.plusBuff.reduce((sum, b) => sum + b, 1);
-  const mulBuffTotal = char.mulBuff.reduce((prod, m) => prod * m, 1);
+  const plusBuffTotal = plusBuff.reduce((sum, b) => sum + b, 1);
+  const mulBuffTotal = mulBuff.reduce((prod, m) => prod * m, 1);
   const buffTotal = plusBuffTotal * mulBuffTotal;
-  const atkTotal = char.baseAtk * buffTotal;
+  const atkTotal = baseAtk * buffTotal;
 
   let totalPhys = 0;
   let totalElement = 0;
@@ -87,11 +87,11 @@ function updateResult() {
       totalPhys += damagePerAttack;
 
       if (t >= nextNerveTime) {
-        cumNerve += nerveData.nerveRate * damagePerAttack;
+        cumNerve += char.nerveRate * damagePerAttack;
         if (cumNerve >= threshold) {
-          totalElement += nerveData.trueDamageValue;
+          totalElement += elementData.nerveDamageValue;
           cumNerve = 0;
-          nextNerveTime = t + nerveData.nerveCooldown;
+          nextNerveTime = t + elementData.nerveCooldown;
         }
       }
     }
